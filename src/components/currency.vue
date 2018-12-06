@@ -31,14 +31,14 @@
         euro: null,
         interval: null,
         msg: '',
-        success: null
+        success: false
       }
     },
     created () {
       this.getCurrencies();
     },
     mounted () {
-        this.interval = setInterval(function () {
+      this.interval = setInterval(function () {
         this.getCurrencies();
       }.bind(this), 10000)
     },
@@ -59,20 +59,18 @@
       }
     },
     methods: {
-      getCurrencies () {
-        this.$http.get(this.$root.$options.settings.api.getCurrencies())
-        .then(response => {
-          this.success = response.data.success
-          if (this.success) {
-            this.dollar = response.data.currencies.dollar
-            this.euro = response.data.currencies.euro
-          }
-          else {
-            this.msg = response.data.msg;
-            this.dollar = null;
-            this.euro = null;
-          }
-        })
+      async getCurrencies () {
+        const response = await this.$http.get(this.$root.$options.settings.api.getCurrencies())
+        this.success = response.data.success
+        if (this.success) {
+          this.dollar = response.data.currencies.dollar
+          this.euro = response.data.currencies.euro
+        }
+        else {
+          this.msg = response.data.msg;
+          this.dollar = null;
+          this.euro = null;
+        }
       }
     },
     beforeDestroy () {
