@@ -2,15 +2,15 @@
   <div>
     <h4> Курс валют (на {{ getDay }}) </h4>
     <div id='currency_unit'>
-      <errorMsg v-if="success == false" v-bind:message='msg'></errorMsg>
-      <table id='currency_table'>
-        <tr>
+      <errorMsg v-if="success == false" v-bind:message='msg' data-test="error"></errorMsg>
+      <table id='currency_table' data-test='currencyTable'>
+        <tr v-if='dollar!=null'>
           <td>
             $
           </td>
           <td> {{ dollar }} </td>
         </tr>
-        <tr>
+        <tr v-if='euro!=null'>
           <td>
             €
           </td>
@@ -59,18 +59,27 @@
       }
     },
     methods: {
-      async getCurrencies () {
-        const response = await this.$http.get(this.$root.$options.settings.api.getCurrencies())
-        this.success = response.data.success
-        if (this.success) {
-          this.dollar = response.data.currencies.dollar
-          this.euro = response.data.currencies.euro
-        }
-        else {
-          this.msg = response.data.msg;
-          this.dollar = null;
-          this.euro = null;
-        }
+      getCurrencies () {
+        this.$http.get(this.$root.$options.settings.api.getCurrencies())
+        .then(response => {
+          this.success = response.data.success
+          if (this.success) {
+            this.dollar = response.data.currencies.dollar
+            this.euro = response.data.currencies.euro
+          }
+          else {
+            this.showError(response.data.msg)
+          }
+        })
+        .catch( () => {
+          this.showError()
+        })
+      },
+      showError (msg = 'There are no data!') {
+        this.msg = msg;
+        this.success = false;
+        this.dollar = null;
+        this.euro = null
       }
     },
     beforeDestroy () {
