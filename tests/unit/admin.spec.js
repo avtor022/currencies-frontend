@@ -74,22 +74,22 @@ describe('Admin error', () => {
 })
 
 describe('create currency forcing', () => {
+  const timeNow = new Date(),
+    localVue = createLocalVue();
   mockAxios.post.mockImplementationOnce(() =>
     Promise.resolve({
       data: {}
     })
   )
-  const timeNow = new Date(),
-    localVue = createLocalVue();
   localVue.use(VueAxios, mockAxios);
   localVue.options.settings = { api: config };
   const wrapper = mount(Admin, {
           localVue,
           data () {
             return {
-              currency_type: 'dollar',
-              currency_value: 1.2,
-              forcing_date: timeNow
+              currencyType: 'dollar',
+              currencyValue: 1.2,
+              forcingDate: timeNow
             }
           }
         });
@@ -103,6 +103,38 @@ describe('create currency forcing', () => {
           forcing_date: timeNow
         }
       });
+      done()
+    })
+  })
+})
+
+describe('delete currency forcing', () => {
+  const timeNow = new Date(),
+    localVue = createLocalVue();
+  mockAxios.delete.mockImplementationOnce(() =>
+    Promise.resolve({
+      data: {}
+    })
+  )
+  localVue.use(VueAxios, mockAxios);
+  localVue.options.settings = { api: config };
+  const wrapper = mount(Admin, {
+          localVue,
+          data () {
+            return {
+              currencyForcingDataList: [{
+                id: 1,
+                currency_type: 'dollar',
+                currency_value: 1.2,
+                forcing_date: timeNow
+              }]
+            }
+          }
+        });
+  it('sends a delete request', (done) => {
+    wrapper.vm.removeCurrencyForcingData(0)
+    wrapper.vm.$nextTick(() => {
+      expect(mockAxios.delete).toBeCalledWith(config.currencyForcing() + '/' + wrapper.vm.currencyForcingDataList[0].id, '');
       done()
     })
   })

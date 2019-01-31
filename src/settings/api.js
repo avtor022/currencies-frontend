@@ -1,6 +1,6 @@
 class Config {
   constructor() {
-    this.baseApiURL = 'http://172.26.95.173:3001'
+    this.baseApiURL = 'http://localhost:3001'
   }
 
   currencyForcing () {

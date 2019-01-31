@@ -1,39 +1,29 @@
-# frontend
+# Фронтенд для web приложения Currencies.
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Run your end-to-end tests
-```
-npm run test:e2e
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+#
+##### Для запуска web приложения Currencies необходимо выполнить следующие шаги:
+* создать папку (например `currencies`)
+    ```
+    ~$ mkdir ./currencies && cd ./currencies`
+    ```
+* в созданную папку скачать приложения: `currencies-backend`, `currencies-frontend`
+    ```
+    ~/currencies$ git clone https://github.com/avtor022/currencies-backend.git
+    ~/currencies$ git clone https://github.com/avtor022/currencies-frontend.git
+    ```
+* установить зависимости:
+    ```
+    ~/currencies$ cd ./currencies-backend && bundle install && rake db:migrate
+    ~/currencies$ cd ./currencies-frontend && npm install
+    ```
+* запуск приложения осуществляется с `/currencies-backend`
+    ```
+    ~/currencies$ cd ./currencies-backend && foreman start
+    ```
+#
+#
+##### Запуск тестов
+  ```
+  ~/currencies/currencies-frontend$ npm run unit
+  ~/currencies/currencies-frontend$ npm run e2e
+  ```
